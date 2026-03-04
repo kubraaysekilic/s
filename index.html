@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nasıl İnanmalı? – Sınav Hazırlık</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --rose: #e8a0a0;
+    --rose-dark: #c97b7b;
+    --sage: #a8c4a0;
+    --sage-dark: #6d9b64;
+    --lavender: #c9b8e8;
+    --peach: #f5c9a0;
+    --brown: #7a5c3a;
+    --text: #3d2b1f;
+    --text-light: #7a6050;
+    --white: #fff9f3;
+    --correct-bg: #d4edda;
+    --correct-border: #6aaa7e;
+    --wrong-bg: #fde8e8;
+    --wrong-border: #d97575;
+    --selected-bg: #e8e0f5;
+    --selected-border: #9b80d4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(232,160,160,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(168,196,160,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(201,184,232,0.08) 0%, transparent 60%);
+  }
+
+  /* Floating flowers */
+  .flower-bg {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+    font-size: 2rem;
+    animation: float 8s ease-in-out infinite;
+  }
+  .flower-bg:nth-child(1) { top: 5%; left: 3%; animation-delay: 0s; font-size: 1.8rem; }
+  .flower-bg:nth-child(2) { top: 15%; right: 4%; animation-delay: 1.5s; font-size: 1.5rem; }
+  .flower-bg:nth-child(3) { top: 40%; left: 1%; animation-delay: 3s; font-size: 2rem; }
+  .flower-bg:nth-child(4) { top: 60%; right: 2%; animation-delay: 0.7s; font-size: 1.6rem; }
+  .flower-bg:nth-child(5) { top: 80%; left: 4%; animation-delay: 2s; font-size: 1.4rem; }
+  .flower-bg:nth-child(6) { bottom: 5%; right: 5%; animation-delay: 4s; font-size: 2.2rem; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(5deg); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 28px 20px 20px;
+    background: linear-gradient(135deg, rgba(255,249,243,0.9), rgba(253,246,236,0.95));
+    border-radius: 20px;
+    border: 1.5px solid rgba(232,160,160,0.4);
+    box-shadow: 0 4px 20px rgba(122,92,58,0.08);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '🌸';
+    position: absolute;
+    top: -8px; left: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+  }
+  .header::after {
+    content: '🌺';
+    position: absolute;
+    bottom: -8px; right: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: var(--brown);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .header p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 300;
+  }
+
+  /* Progress */
+  .progress-bar-wrap {
+    background: rgba(122,92,58,0.1);
+    border-radius: 30px;
+    height: 8px;
+    margin: 14px 0 8px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--lavender), var(--sage));
+    border-radius: 30px;
+    transition: width 0.5s ease;
+  }
+
+  /* Nav top */
+  .nav-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(110,155,100,0.15);
+    border: 1px solid var(--sage);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    color: var(--sage-dark);
+    font-weight: 700;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1.5px solid rgba(232,160,160,0.3);
+    box-shadow: 0 6px 24px rgba(122,92,58,0.07);
+    padding: 24px 20px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rose), var(--lavender), var(--peach), var(--sage));
+  }
+
+  .question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .question-num {
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 30px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* Options */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(253,246,236,0.7);
+    border: 1.5px solid rgba(122,92,58,0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.4;
+    transition: all 0.2s ease;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .option-btn:hover:not(.disabled) {
+    background: rgba(201,184,232,0.2);
+    border-color: var(--lavender);
+    transform: translateX(3px);
+  }
+  .option-btn.disabled { cursor: default; }
+
+  .option-letter {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(122,92,58,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brown);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .option-btn.selected {
+    background: var(--selected-bg);
+    border-color: var(--selected-border);
+  }
+  .option-btn.selected .option-letter {
+    background: var(--selected-border);
+    color: white;
+  }
+  .option-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+  }
+  .option-btn.correct .option-letter {
+    background: var(--correct-border);
+    color: white;
+  }
+  .option-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong-border);
+  }
+  .option-btn.wrong .option-letter {
+    background: var(--wrong-border);
+    color: white;
+  }
+
+  /* Feedback */
+  .feedback {
+    display: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin-top: 12px;
+  }
+  .feedback.show { display: flex; gap: 10px; align-items: flex-start; }
+  .feedback.correct-fb {
+    background: var(--correct-bg);
+    border: 1px solid var(--correct-border);
+    color: #2d6a4a;
+  }
+  .feedback.wrong-fb {
+    background: var(--wrong-bg);
+    border: 1px solid var(--wrong-border);
+    color: #9b3a3a;
+  }
+  .feedback-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .feedback-text strong { display: block; margin-bottom: 3px; font-size: 0.85rem; }
+
+  /* Navigation buttons */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 20px;
+    border-radius: 30px;
+    border: 1.5px solid;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-prev {
+    background: transparent;
+    border-color: rgba(122,92,58,0.25);
+    color: var(--text-light);
+  }
+  .btn-prev:not(:disabled):hover {
+    background: rgba(122,92,58,0.06);
+  }
+  .btn-next {
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 3px 12px rgba(201,123,123,0.3);
+  }
+  .btn-next:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(201,123,123,0.4);
+  }
+  .question-counter-mid {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  /* Results screen */
+  #results-screen {
+    display: none;
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--white);
+    border-radius: 24px;
+    border: 1.5px solid rgba(232,160,160,0.3);
+    box-shadow: 0 8px 32px rgba(122,92,58,0.1);
+  }
+  .result-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+  .result-score {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--rose-dark);
+    line-height: 1;
+    margin: 12px 0 6px;
+  }
+  .result-sub { color: var(--text-light); font-size: 0.88rem; margin-bottom: 24px; }
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 16px 0 24px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    padding: 10px 16px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    min-width: 80px;
+  }
+  .stat-correct { background: var(--correct-bg); color: #2d6a4a; border: 1px solid var(--correct-border); }
+  .stat-wrong { background: var(--wrong-bg); color: #9b3a3a; border: 1px solid var(--wrong-border); }
+  .stat-skip { background: rgba(201,184,232,0.3); color: #6040a0; border: 1px solid var(--lavender); }
+
+  .restart-btn {
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 13px 30px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(108,155,100,0.35);
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(108,155,100,0.45); }
+
+  /* Divider */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 10px;
+    font-size: 0.72rem;
+    color: var(--text-light);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(122,92,58,0.12);
+  }
+
+  /* Özet çıktısı için scrollable */
+  .result-scroll {
+    max-height: 220px;
+    overflow-y: auto;
+    text-align: left;
+    margin: 10px 0 16px;
+    padding-right: 4px;
+  }
+  .result-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 0.79rem;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .result-item.r-correct { background: #edfaf2; color: #2d6a4a; }
+  .result-item.r-wrong { background: #fef0f0; color: #9b3a3a; }
+  .result-item.r-skip { background: rgba(201,184,232,0.2); color: #6040a0; }
+  .ri-icon { font-size: 0.85rem; flex-shrink: 0; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.3rem; }
+    .question-text { font-size: 0.92rem; }
+    .option-btn { font-size: 0.82rem; padding: 10px 12px; }
+    .nav-btn { padding: 9px 16px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Decorative floating flowers -->
+<span class="flower-bg">🌸</span>
+<span class="flower-bg">🌺</span>
+<span class="flower-bg">🌼</span>
+<span class="flower-bg">🌷</span>
+<span class="flower-bg">🌻</span>
+<span class="flower-bg">🍃</span>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📖 Nasıl İnanmalı?</h1>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="nav-info">
+      <div class="score-badge" id="scoreBadge">✅ 0 doğru</div>
+      <span id="progressText">0 / 50 tamamlandı</span>
+    </div>
+  </div>
+
+  <!-- Quiz area -->
+  <div id="quiz-area">
+    <div class="question-card" id="questionCard">
+      <div class="question-header">
+        <span class="question-num" id="qNum">Soru 1 / 50</span>
+        <div class="question-text" id="qText"></div>
+      </div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="feedback" id="feedback">
+        <span class="feedback-icon" id="fbIcon"></span>
+        <div class="feedback-text" id="fbText"></div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn btn-prev" id="prevBtn" onclick="navigate(-1)" disabled>← Önceki</button>
+      <div class="question-counter-mid" id="qCounterMid">1 / 50</div>
+      <button class="nav-btn btn-next" id="nextBtn" onclick="navigate(1)">Sonraki →</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-screen">
+    <span class="result-emoji" id="resultEmoji">🌸</span>
+    <div class="result-title">Sınav Tamamlandı!</div>
+    <div class="result-score" id="resultScore">0/50</div>
+    <div class="result-sub" id="resultSub">Sonuçlarınız aşağıda</div>
+    <div class="stat-row">
+      <div class="stat-box stat-correct" id="statCorrect">✅ 0 Doğru</div>
+      <div class="stat-box stat-wrong" id="statWrong">❌ 0 Yanlış</div>
+      <div class="stat-box stat-skip" id="statSkip">○ 0 Boş</div>
+    </div>
+    <div class="section-divider">Soru Özeti</div>
+    <div class="result-scroll" id="resultScroll"></div>
+    <button class="restart-btn" onclick="restartQuiz()">🌱 Yeniden Başla</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+
+
+  {
+  "q": "Yüce Allah'ın insanı diğer yaratılmışlardan üstün kılarak onu yeryüzünün halifesi yapmasının temel nedeni aşağıdakilerden hangisidir?",
+  "opts": [
+  "Diğer varlıklara göre daha uzun ve hastalıklardan uzak bir yaşam sürmesi",
+  "Akıl ve iradeye sahip bir varlık olarak tercih yapabilme gücünün bulunması",
+  "Yeryüzündeki tüm doğal kaynakları dilediği gibi kullanma yetkisine sahip olması",
+  "Fiziksel dayanıklılığının dünyadaki diğer tüm canlılardan üstün olması",
+  "Melekler gibi tamamen günahsız ve hatadan arındırılmış bir yapıda yaratılması"
+  ],
+  "correct": 1,
+  "explanation": "Metne göre insan, sahip olduğu akıl ve irade ile bütün yaratılmışlardan üstün kılınmış ve bu özelliği sayesinde iman ile küfür, iyi ile kötü arasında tercih yapabilme ayrıcalığına (ve sorumluluğuna) kavuşmuştur."
+  },
+  {
+  "q": "Kitapta adı geçen İslam akaidi eserleri ve müellifleri düşünüldüğünde, aşağıdakilerden hangisi Anadolu coğrafyasında yazılmış meşhur akaid eserlerinden biri değildir?",
+  "opts": [
+  "Mehmet Vehbi Efendi - El-Akidetül Hayriye",
+  "Seydişehirli Mahmud Esad Efendi - Ravdatül Cennat Fi Usulil İtikat",
+  "Mehmet Zahid Kotku - Ehl-i Sünnet Akaidi",
+  "Ahmet Ziyaüddin el-Gümüşhanevi - Ehl-i Sünnet İtikadı",
+  "Ebu Hanife - El-Fıkhül Ekber"
+  ],
+  "correct": 4,
+  "explanation": "Ebu Hanife'nin El-Fıkhül Ekber adlı eseri tarihte yazılmış en meşhur temel akaid metinlerindendir ancak yazarın yaşadığı dönem ve bölge itibarıyla Anadolu coğrafyasında kaleme alınan daha sonraki dönem eserlerinden biri değildir."
+  },
+  {
+  "q": "Elinizdeki kitabın yazılış amacı ve eski akaid metinlerinin günümüzdeki durumuyla ilgili olarak aşağıdakilerden hangisi söylenebilir?",
+  "opts": [
+  "Eski akaid metinleri içerik bakımından yetersiz olduğu için tamamen reddedilmelidir.",
+  "Modern çağın getirdiği iletişim hızı ve zihinsel şüphelere güncel bir dille cevap verme ihtiyacı doğmuştur.",
+  "Günümüz insanı eski metinleri okumaya ihtiyaç duymadan yalnızca aklıyla inanç esaslarını kavrayabilir.",
+  "Geçmişte yazılan akaid kitapları yalnızca dönemin siyasi olaylarına odaklandığı için inanç konularını eksik bırakmıştır.",
+  "Eski akaid alimlerinin inanç meselelerindeki yaklaşımları bugün bilimsel olarak çürütüldüğü için yeni eserler yazılmalıdır."
+  ],
+  "correct": 1,
+  "explanation": "Kitapta, eski metinlerin içerik olarak çok zengin ve doyurucu olduğu ancak dillerinin o dönemi yansıttığı; günümüz insanının yeni sorularına güncel, anlaşılır ve şüpheleri giderici yeni bir dille cevap verilmesi gerektiği vurgulanmaktadır."
+  },
+  {
+  "q": "Bilim ve inancın olaylara yaklaşımıyla ilgili metinde yapılan değerlendirmeye göre aşağıdaki ifadelerden hangisi doğrudur?",
+  "opts": [
+  "Bilim ve inanç tamamen birbirine zıt iki alandır ve ortak bir noktada buluşmaları imkansızdır.",
+  "Bilim evrendeki olayların 'neden' olduğunu kesin bir dille açıklarken, inanç 'nasıl' sorusuna odaklanır.",
+  "İnanç, bilimin bulgularını reddederek yalnızca nakli kaynaklara dayalı soyut bir düşünce dünyası kurar.",
+  "Bilim, evrenin ve olayların nasıl işlediğini anlarken; inanç bu olup bitenleri anlamlandırır ve nedenine cevap bulur.",
+  "İnanç yalnızca insanın ölüm sonrasını aydınlatırken bilim insanın dünya hayatındaki ahlaki sorumluluklarını belirler."
+  ],
+  "correct": 3,
+  "explanation": "Metinde bilimin olayların 'nasıl' işlediğini teorilerle (Big Bang gibi) izah etmeye çalıştığı, ancak 'neden' var olduğumuz sorusuna inancın cevap verdiği ve hayatı anlamlandırdığı açıkça belirtilmiştir."
+  },
+  {
+  "q": "İnsanın varoluşsal sorular karşısında sükunete ermesini, vesvese, evham ve korku olmadan tam bir güven ve teslimiyetle ruhsal tatmin yaşamasını ifade eden İslami kavram aşağıdakilerden hangisidir?",
+  "opts": [
+  "Tevekkül",
+  "İhlas",
+  "İtminan",
+  "İkrar",
+  "Marifetullah"
+  ],
+  "correct": 2,
+  "explanation": "Kitapta, kişinin bedenen ve ruhen sükuna ermesi, tam bir güven ve teslimiyetle derin bir huzur hali yaşamasının İslam tasavvufunda 'itminan' (ruhsal tatmin) olarak isimlendirildiği ifade edilmiştir."
+  },
+  {
+  "q": "İnanan insanların ibadetlere yönelmesi ve her şeyi gören bir yaratıcının varlığı bilinciyle hareket etmesinin, bireyin hayatına en temel pratik etkisi aşağıdakilerden hangisidir?",
+  "opts": [
+  "Toplumda her zaman saygın bir statü ve itibar elde etmesini garanti etmesi",
+  "Sadece uhrevi hayata odaklanarak dünyevi işlerden tamamen el çekmesini sağlaması",
+  "Hesap gününün varlığı bilinciyle her durumda iyi insan olma çabası içine girmesi",
+  "Ahlaki kuralları esneterek ibadetleri hayatının tek ve mutlak amacı haline getirmesi",
+  "Bütün maddi kaygılarından sıyrılarak hiçbir zaman hastalık veya sıkıntı yaşamaması"
+  ],
+  "correct": 2,
+  "explanation": "Metne göre inanan insan, yaratıcının her an her şeyi gördüğünü bilerek ve hesap gününe inanarak iyi insan olma sevkini içinde taşır ve hayatını bu gayeye göre şekillendirir."
+  },
+  {
+  "q": "İslam inancının doğru ve sapasağlam bir şekilde temellendirilebilmesi için aklın konumuyla ilgili kitabın yaklaşımı aşağıdakilerden hangisidir?",
+  "opts": [
+  "Akıl, inanç meselelerinde tamamen devre dışı bırakılmalı ve sadece dogmatik bir teslimiyet benimsenmelidir.",
+  "Doğru inanca ulaşmada akıl tek başına yeterlidir, harici hiçbir ilahi bilgi kaynağına ihtiyaç duyulmaz.",
+  "Aklın bir sınırı olduğu baştan kabul edilerek, akıl sonuna kadar kullanılmalı ve ilahi nakillerle (vahiy) desteklenmelidir.",
+  "Akıl, sadece gündelik ve dünyevi meselelerin çözümünde kullanılmalı, inanç sorgulamalarından tamamen uzak tutulmalıdır.",
+  "Aklın yönlendirmesi her zaman yanıltıcıdır; bu yüzden şüphe uyandıran sorular asla akıl yoluyla düşünülmemelidir."
+  ],
+  "correct": 2,
+  "explanation": "Kitapta aklın mutlaka kullanılması gerektiği ancak aklın sınırları olduğunun baştan kabul edilmesiyle işin kolaylaşacağı; aklın, nakil (ayet ve hadisler) ile birlikte hareket etmesinin İslam inancının sağlamlığının temeli olduğu vurgulanmıştır."
+  },
+  {
+  "q": "Kur'an'da bilgi sürecine eşlik eden birçok kavram bulunmasına rağmen, bütün bilişsel süreci (akletme, gözlem, çağrışım) kapsayan en merkezi ve kapsayıcı şemsiye kavram aşağıdakilerden hangisidir?",
+  "opts": [
+  "Hikmet",
+  "İlim",
+  "İrfan",
+  "Marifet",
+  "Tasdik"
+  ],
+  "correct": 1,
+  "explanation": "Metne göre Kur'an-ı Kerim'in bilişsel süreci ifade etmek için kullandığı merkezi şemsiye kavram 'ilim'dir. Bu kavram görünenden fizik ötesine kadar her türlü doğru bilgi çabasını içerir."
+  },
+  {
+  "q": "Kur'an-ı Kerim'de insanın melekler de dahil bütün yaratıkların üstüne yerleştirilmesinin (Hz. Adem'in üstünlüğünün) temel ölçütü olarak ne gösterilmiştir?",
+  "opts": [
+  "Bedensel yapısının topraktan mükemmel bir şekilde halk edilmesi",
+  "Yeryüzünde halife olarak maddi imkanlara hükmetme gücü",
+  "Meleklerin aksine kendi cüz-i iradesiyle ibadet edebilme yetisi",
+  "Bilgi kapasitesi ve Hz. Adem'in meleklerin sayamadığı isimleri sayabilmesi",
+  "Hiçbir zaman günah işlememe garantisiyle yaratılmış olması"
+  ],
+  "correct": 3,
+  "explanation": "Bakara suresindeki kıssaya atıf yapılarak, Hz. Adem'in bilgi kapasitesinin (isimleri sayabilmesinin), onu bilgiye sahip olmayan meleklerden üstün bir konuma yerleştirdiği metinde ifade edilmiştir."
+  },
+  {
+  "q": "Kur'an-ı Kerim'e göre kaynağı belirsiz olan, akıl yürütmeye veya sağlam delillere dayanmayıp insanın kişisel arzu ve güdülerinden kaynaklanan bilgi türüne ne ad verilmektedir?",
+  "opts": [
+  "Zan",
+  "Heva",
+  "Taklit",
+  "Evham",
+  "Şüphe"
+  ],
+  "correct": 0,
+  "explanation": "Metinde belirsizlik barındıran, kuşkulu ve belli bir kesinlik düzeyine ulaşmamış, insan arzusuna dayanan asılsız bilgiye Kur'an'ın 'zan' adını verdiği belirtilmiştir."
+  },
+  {
+  "q": "İslam toplumlarında bir kişinin dışarıdan gözlemlenen tutumlarına bakarak onu doğrudan imansızlıkla (küfürle) suçlamanın İslam'ın ruhuna aykırı olmasının en temel nedeni nedir?",
+  "opts": [
+  "Dinde herkesin istediği şekilde inanma veya inanmama özgürlüğünün mutlak bir sınırsızlıkta olması",
+  "İmanın kalbe ait bir durum ve Allah ile kul arasında olması sebebiyle dışarıdan tam olarak bilinememesi",
+  "Bu tür suçlamaların hukuki olarak suç kabul edilmesi ve mahkemelerce ağır cezalar verilmesi",
+  "Bireylerin inanç sistemlerini kendi başlarına kurabilecekleri bağımsız teolojik alanlarının bulunması",
+  "İmansızlıkla suçlanan kişinin sonradan dini gruplara liderlik etme potansiyelinin olması"
+  ],
+  "correct": 1,
+  "explanation": "Kitapta imanın kalbe ait bir tasdik olduğu, Allah ile kul arasında gerçekleştiği ve söz/davranışla reddedilmediği sürece başka insanların bunu kesin olarak bilemeyeceği için başkalarını tekfir etmenin (imansızlıkla suçlamanın) tehlikeli ve yanlış olduğu vurgulanır."
+  },
+  {
+  "q": "İslam'da intiharın kesin bir dille yasaklanıp büyük günahlardan biri sayılmasının varoluşsal temel gerekçesi aşağıdakilerden hangisidir?",
+  "opts": [
+  "İntiharın toplumsal nüfus dengesini bozarak İslam toplumunu askeri açıdan zayıflatması",
+  "İnsanın ömrünü tamamlamadan ahirete göçmesinin meleklerin görev dağılımını zorlaştırması",
+  "Hayatın insana yaratılıştan verilmiş bir emanet olması ve onu korumanın varoluşsal bir görev olması",
+  "İntihar eden kimsenin bıraktığı mirasa varislerinin helal yoldan sahip olma hakkını yitirmesi",
+  "Sadece ruhsal hastalık sahibi olanların bunu yapabileceği ve tıbbın her zaman buna çare bulabileceğinin düşünülmesi"
+  ],
+  "correct": 2,
+  "explanation": "Metinde insanın dünyaya gelişinin kendi elinde olmadığı gibi ölümünün de kendi elinde olmadığı, hayatın bir emanet olduğu ve bu emaneti korumanın temel bir görev olduğu için intiharın yasaklandığı belirtilmiştir."
+  },
+  {
+  "q": "İmanın genel kabul gören tanımına göre; imanın gerçekleşmesi için kişinin öncelikle inanç esaslarını kalp ile ..., sonrasında da bunu dil ile ... etmesi gerekmektedir. Boşluklara sırasıyla hangi kavramlar gelmelidir?",
+  "opts": [
+  "tasdik - inkar",
+  "idrak - inkar",
+  "tasdik - ikrar",
+  "ikrar - tasavvur",
+  "idrak - tasdik"
+  ],
+  "correct": 2,
+  "explanation": "Yaygın kabul gören görüşe göre iman; kalb ile tasdik, dil ile ikrar etmek şeklinde tanımlanmıştır. Sözlükte de iman, doğrulamak ve tasdik etmek anlamına gelir."
+  },
+  {
+  "q": "Temel inanç esaslarına hiçbir detaya ve ayrıntıya girmeden, toptan ve kısaca iman edip benimsemeye ne ad verilir?",
+  "opts": [
+  "Tafsili iman",
+  "Taklidi iman",
+  "Tahkiki iman",
+  "İcmali iman",
+  "Yakini iman"
+  ],
+  "correct": 3,
+  "explanation": "Metinde, temel inanç esaslarına ayrıntıya girmeden toptan inanmanın 'İcmali iman' olduğu ve bunun en özlü ifadesinin Kelime-i Tevhid ve Kelime-i Şehadet olduğu aktarılmıştır."
+  },
+  {
+  "q": "Maddenin, evrenin ve içindekilerin işleyişinin bir rastlantı sonucu var olduğunu, olayların kendi ilmi ve gücüyle kendiliğinden meydana geldiğini savunmak, kitabın içeriğine göre ne tür bir inanç sapkınlığıdır?",
+  "opts": [
+  "Kaderiye inancı",
+  "Örtülü (gizli) şirk",
+  "Materyalist (maddeci) düşüncenin şirki",
+  "Taklidi inkar",
+  "Hurafe ve bid'at karmaşası"
+  ],
+  "correct": 2,
+  "explanation": "Metne göre, evrenin varoluşunu Allah'ın gücü yerine rastlantıyla veya maddenin kendi ilmiyle/gücüyle açıklamak, sebeplere ilahlık vermek demektir ve bu günümüzde materyalist düşünce taraftarlarının içine düştüğü şirktir."
+  },
+  {
+  "q": "İslam inancına göre bir ibadeti veya iyiliği yalnızca Allah rızası için yapmak yerine; dünyevi bir çıkar sağlamak, makam elde etmek veya insanlara gösteriş yapmak (riya) amacıyla gerçekleştirmek aşağıdaki kavramlardan hangisiyle açıklanır?",
+  "opts": [
+  "Münâfıklık",
+  "Açık şirk",
+  "Örtülü (gizli) şirk",
+  "Kibrin tasdiki",
+  "Zan ve heva"
+  ],
+  "correct": 2,
+  "explanation": "Bir insanın ibadetlerini gösteriş için yapması, kendini hatasız görmesi veya iyilikleri menfaat için gerçekleştirmesi metinde şirkin bir çeşidi olan 'örtülü/gizli şirk' olarak adlandırılmıştır."
+  },
+  {
+  "q": "İbadetlerde (örneğin namazda) Kabe'ye yönelmekle ilgili olarak kafa karışıklığı yaşayan birine verilebilecek en doğru ve kitaba uygun cevap aşağıdakilerden hangisidir?",
+  "opts": [
+  "Kabe bizzat ilahi bir güce sahip olduğu için doğrudan Kabe'ye ibadet edilmektedir.",
+  "İbadet edilecek tek varlık Allah'tır; Kabe ise ibadet edilen bir varlık değil, yalnızca Müslümanların yöneldiği ortak bir kıbledir.",
+  "Kabe'ye yönelmek geçmiş peygamberlerden kalan kültürel bir miras olup aslında terk edilmesi gereken bir gelenektir.",
+  "Kabe, Allah'ın yeryüzündeki fiziksel makamı kabul edildiği için zorunlu bir şirk istisnasıdır.",
+  "Müslümanlar sadece Kabe'nin içindeyken Allah'a ibadet ederler, dışındayken Kabe'nin kendisine yönelirler."
+  ],
+  "correct": 1,
+  "explanation": "Metinde namazda Kabe'ye yönelmenin şirk olmadığı, İslam inancında ibadet edilecek tek varlığın Allah olduğu, Kabe'nin ise Yüce Allah'ın yönelmemizi istediği sembolik bir kıblegah olduğu belirtilmektedir."
+  },
+  {
+  "q": "İslam düşüncesinde Allah'ı bilme ve tanıma sürecini ifade etmek için kullanılan, O'nun isim ve sıfatlarını kavramayı amaçlayan özel terim aşağıdakilerden hangisidir?",
+  "opts": [
+  "Kelamullah",
+  "Zikrullah",
+  "Marifetullah",
+  "Tasavvur",
+  "Müşahede"
+  ],
+  "correct": 2,
+  "explanation": "Allah'ı bilme, diğer bilgi türlerinden farklıdır. O'nun zatını bilmek imkansız olsa da varlığını, isim ve sıfatlarını bilmek mümkündür ve buna literatürde 'Marifetullah' denildiği kitapta geçmektedir."
+  },
+  {
+  "q": "Evrende gözlemlediğimiz mevsimlerin değişmesi, gecenin gündüzü takip etmesi, canlıların doğup ölmesi gibi değişim ve dönüşümler İslam akaidine göre neyin kesin bir delilidir?",
+  "opts": [
+  "Maddenin doğası gereği ebediyen var olacağının",
+  "Evrenin kendi kendini yöneten mükemmel bir bilince sahip olduğunun",
+  "Var olan her şeyin başlangıçsız, kadim ve ezeli olduğunun",
+  "Evrenin ve içindekilerin bir başlangıcı olduğunun ve bir yaratıcıya ihtiyaç duyduğunun",
+  "Tabiat kurallarının hiçbir ilahi müdahale olmadan rastlantısal geliştiğinin"
+  ],
+  "correct": 3,
+  "explanation": "Değişim ve dönüşüm (varoluş ve yok oluş), bir şeyin hadis (yaratılmış) olduğuna delildir. Kadim ve ezeli varlık değişmez; değişen şeylerin var edici bir yaratıcıya ihtiyacı olduğu eserde belirtilmiştir."
+  },
+  {
+  "q": "Allah'ın yüceliğinin, büyüklüğünün ve ululuğunun her türlü noksanlıktan uzak olduğunu ifade eden ve sözlükte de bu anlama gelen sıfatı/ismi aşağıdakilerden hangisidir?",
+  "opts": [
+  "Celâl",
+  "Vedûd",
+  "Rezzâk",
+  "Muhyî",
+  "Selâm"
+  ],
+  "correct": 0,
+  "explanation": "Metinde 'Celâl' isminin yücelik, ululuk ve bütün noksanlıklardan uzak olmak anlamına gelen celal fiilinden türediği; Allah'ın eşsiz yüceliğini (Kebir ve Azim isimlerine yakın anlamla) ifade ettiği zikredilmiştir."
+  },
+  {
+  "q": "Yüce Allah'ın mülkün gerçek sahibi olduğunu, kutsal, eksikliklerden uzak, barış ve esenlik kaynağı olduğunu anlatan isim grubunda aşağıdakilerden hangisi yer almaz?",
+  "opts": [
+  "Selâm",
+  "Mü'min",
+  "Dar",
+  "Kuddüs",
+  "Müheymin"
+  ],
+  "correct": 2,
+  "explanation": "Metindeki açıklamaya göre 'Dar' ismi, Arapça zarar vermek fiilinden türemiş olup, hikmeti gereği zarar ve elem verici şeylerin de yaratıcısı olması anlamına gelir. Diğerleri esenlik ve eksiklikten uzak olmayı (Selam, Kuddüs vs.) ifade eder."
+  },
+  {
+  "q": "Aşağıdaki eşleştirmelerden hangisinde Allah'ın ismi ve anlamı doğru olarak verilmiştir?",
+  "opts": [
+  "El-Muiz: Dilediğini zillete düşüren ve değersiz kılan",
+  "El-Müzil: İnsanlara rızık kapılarını tamamen kapatan",
+  "Celâl: Can veren ve dirilten",
+  "Dar: Dilediğine yücelik ve değer katan",
+  "El-Muiz: Dilediklerini yücelten, güçlü ve değerli kılan"
+  ],
+  "correct": 4,
+  "explanation": "Metne göre El-Muiz, dilediklerini yücelten ve değerli kılandır. El-Müzil ise dilediğini zillete düşüren ve değersiz kılandır."
+  },
+  {
+  "q": "İslam akaidine göre meleklerin insanlardan farklı olan en temel karakteristik özelliği aşağıdakilerden hangisidir?",
+  "opts": [
+  "Fiziksel güçlerinin sınırsız olması sebebiyle yeryüzündeki tüm doğal afetleri doğrudan yönetmeleri",
+  "İrade ve isyan kabiliyetlerinin bulunmaması, yalnızca Allah'ın emirlerini eksiksiz yerine getirmeye programlı olmaları",
+  "Cinsiyetlerinin olması ancak kendi aralarında herhangi bir üreme faaliyetinin gerçekleşmemesi",
+  "Sadece peygamberlere görünüp diğer insanların ahiret hayatıyla hiçbir şekilde ilgilenmemeleri",
+  "Zaman zaman Allah'ın emirlerine kendi düşünceleriyle itiraz edebilme haklarının olması"
+  ],
+  "correct": 1,
+  "explanation": "Meleklerin irade ve isyan kabiliyetleri bulunmayan, Allah'ın kendilerine verdiği emirleri harfiyen yerine getiren, Allah'tan korkan varlıklar olduğu metinde açıkça belirtilmiştir."
+  },
+  {
+  "q": "İnsanın dünya hayatına aşırı dalıp gerçek hedefini unutmasıyla ilgili kitapta vurgulanan 'cennet' metaforunun anlamı aşağıdakilerden hangisidir?",
+  "opts": [
+  "İnsanın doğuştan cennetlik olduğu ve dünya hayatında ne yaparsa yapsın cehenneme gidemeyeceği",
+  "İnsanın köken itibarıyla cennetten geldiğini unutarak yeniden oraya dönmek için çaba sarf etmeyi ihmal etmesi",
+  "Dünyanın aslında cennetin birebir yansıması olduğu ve asıl amacın dünyayı cennete çevirmek olduğu",
+  "İnsanın ölüm sonrasında kesin olarak yargılanmadan önce cennette geçici bir süre bekletileceği",
+  "Cennet kavramının yalnızca ahiretteki iyiliklerin mecazi bir ifadesi olup gerçek bir mekan olmadığı"
+  ],
+  "correct": 1,
+  "explanation": "Kitapta insanın dünya oyun ve eğlencesine dalıp, 'cennetten geldiğini de unuttuğu, yeniden oraya gitmek için çaba sarf etmesi gerektiğini de unuttuğu' ifadeleriyle gaflet durumuna dikkat çekilir."
+  },
+  {
+  "q": "İnsanın yolunu her şaşırdığında, merhametlilerin en merhametlisi olan Allah'ın onu kendi kaderine terk etmeyip gönderdiği en büyük manevi yardım nedir?",
+  "opts": [
+  "Rüyalar aracılığıyla doğrudan melekleri konuşturması",
+  "Her dönemde yeni bir din icat etmesine izin vermesi",
+  "Peygamberler göndererek ve kitaplar indirerek rehberlik etmesi",
+  "İnsanın doğasına müdahale ederek günah işleme yetisini elinden alması",
+  "Kıyamet gününü sürekli erteleyerek ona sonsuz yaşam şansı tanıması"
+  ],
+  "correct": 2,
+  "explanation": "Allah'ın Rahman ve Rahim isimlerinin tecellisi olarak insanı dünyada yalnız bırakmadığı, yolunu şaşırdığında peygamberler ve kalıcı olması için kitaplar göndererek rehberlik ettiği anlatılmaktadır."
+  },
+  {
+  "q": "Kur'an-ı Kerim'in bildirdiğine göre Hz. İsa'nın babasız olarak dünyaya gelmesini aklen imkansız sayanlara karşı getirilen en temel Kur'ani argüman aşağıdakilerden hangisidir?",
+  "opts": [
+  "O dönemde bu tür doğumların tıbbi olarak çok yaygın olması",
+  "Hz. İsa'nın aslında tam bir insan doğasına sahip olmayıp bir melek olması",
+  "Bütün peygamberlerin doğalarının biyolojik kuralların dışında çalışması",
+  "İlk insan olan Hz. Adem'in hem anasız hem de babasız olarak yaratılmış olması gerçeği",
+  "İnsanlığın her asırda bu tarz mucizelere tanıklık etmesinin zorunlu görülmesi"
+  ],
+  "correct": 3,
+  "explanation": "Hz. Adem'in hem annesiz hem babasız varoluşunu imkansız görmeyen bir aklın, Allah'ın ilim ve kudreti dahilinde Hz. İsa'nın sadece babasız yaratılmasını imkansız göremeyeceği kitapta kıyas yoluyla işlenmiştir."
+  },
+  {
+  "q": "Kıyamet koptuğunda sura üflenme süreciyle ilgili verilen bilgilerden hangisi doğrudur?",
+  "opts": [
+  "Sura sadece bir kez üflenecek ve tüm yaratılış sonsuza dek yok olacaktır.",
+  "Sura ilk üflenişte Allah'ın diledikleri hariç göklerdeki ve yerdeki herkes ölecek, ikinci üflenişte ise kabirlerinden kalkacaklardır.",
+  "Sur üflenmesi tamamen sembolik bir olay olup insanların ölümlerinin aniden gerçekleşeceğini mecazi olarak anlatır.",
+  "Sura ilk üflenişte yalnızca insanlar ölecek, ikinci üflenişte tüm cansız varlıklar yok olacaktır.",
+  "Sura birinci üflemede melekler yeryüzüne inecek, üçüncü üflemede insanlar dirilecektir."
+  ],
+  "correct": 1,
+  "explanation": "Kitapta sura ilk üflenişte (Allah'ın diledikleri hariç) herkesin öleceği, ikinci defa üflendiğinde ise herkesin kabirlerinden dirilip bekleyeceği Kur'an'a dayandırılarak anlatılmaktadır."
+  },
+  {
+  "q": "Kader inancının Kur'an-ı Kerim'de doğrudan 'kader' ismiyle değil, daha geniş kavramlar üzerinden işlendiği belirtilmektedir. Bu bağlamda aşağıdakilerden hangisi kader inancının kapsamına giren Kur'ani konulardan biri değildir?",
+  "opts": [
+  "Allah'ın her şeyi kuşatan ilmi",
+  "Allah'ın her şeyi yoktan var etmesi (Kudret/Yaratma)",
+  "İnsanın rızkı ve eceli",
+  "İlahi iradenin evrendeki tecellisi",
+  "Reenkarnasyon ve ruhların göçü"
+  ],
+  "correct": 4,
+  "explanation": "Kader konusu Kur'an'da Allah'ın ilmi, iradesi, kudreti, yaratması ile insanın rızkı ve eceli kavramlarıyla ele alınır. Reenkarnasyon ise İslam akaidinde tamamen reddedilen batıl bir inançtır."
+  },
+  {
+  "q": "Peygamber Efendimiz'in (s.a.s) 'Her doğan çocuk fıtrat üzere saf ve temiz doğar...' şeklindeki hadisi, inanç konusu bağlamında nasıl yorumlanmalıdır?",
+  "opts": [
+  "İnanç ve inançsızlık doğuştan genetik olarak belirlenmiş sabit bir durumdur.",
+  "İnsanlar doğuştan herhangi bir dine inanmak zorunda olarak yaratılırlar ve bunu değiştiremezler.",
+  "Bütün çocuklar Müslüman doğar ancak melekler onların dinini sonradan değiştirir.",
+  "İnanç veya inançsızlık sonradan insanın kendi tercihi ve aile/çevre etkisiyle kazanılan bir durumdur.",
+  "Fıtratın temiz olması insanın dünyada hiçbir kötülük yapamayacağı anlamına gelir."
+  ],
+  "correct": 3,
+  "explanation": "Hadisin devamındaki '...sonra anne babası onu Yahudi, Hristiyan ya da Mecusi yapar' ifadesinden hareketle, inancın insanın tercihi ve çevrenin etkisiyle sonradan şekillendiği, doğuştan sabit bir inanç/inkar kaderi olmadığı anlatılır."
+  },
+  {
+  "q": "Allah'ın ezeli ve sonsuz ilmiyle, insanın gelecekte ne yapacağını bilmesi ile insanın özgür iradesi (kader ve cüz-i irade ilişkisi) arasındaki denge kitapta hangi örnekle açıklanmıştır?",
+  "opts": [
+  "Bir mimarın binayı inşa etmeden önce tüm malzemelerini ölçmesi gibi",
+  "Bir öğretmenin ders çalışmayan öğrencinin sınıfta kalacağını önceden bilmesinin, öğrencinin çalışmasını engellememesi gibi",
+  "Bir hakimin suçluyu cezalandırmadan önce tüm şahitleri dinlemesi gibi",
+  "Bir doktorun hastasına ilaç verip iyileşmesini sabırla beklemesi gibi",
+  "Bir tüccarın mallarını satmadan önce piyasayı araştırması gibi"
+  ],
+  "correct": 1,
+  "explanation": "Allah'ın zaman üstü ilmiyle bir insanın ne yapacağını bilmesi, o kişinin tercihini zorlayan bir durum değildir. Metin bunu, öğretmenin öğrencinin durumunu bilmesi ama bu bilginin öğrencinin kendi tercihine engel olmaması örneğiyle açıklar."
+  },
+  {
+  "q": "İnsanın ahiretteki hesabı ve sorumluluğu açısından İslam akaidinin temel kuralı aşağıdakilerden hangisidir?",
+  "opts": [
+  "İnsan, toplumunun işlediği tüm ortak günahlardan da aynı derecede sorumludur.",
+  "İnsanın sorumluluğu gücünü aşsa bile her koşulda kusursuz ibadet etmesi beklenir.",
+  "İnsan ancak kendi özgür iradesi (cüz-i irade) ile seçtiği ve gücünün yettiği davranışlardan sorumludur.",
+  "Zorla veya baskı altında yaptırılan iyilikler kişiye ekstra sevap kazandırır.",
+  "Allah'ın insanı önceden inançlı veya inançsız yaratması sorumluluğu tamamen ortadan kaldırır."
+  ],
+  "correct": 2,
+  "explanation": "Kur'an'a göre 'Allah bir kimseyi ancak gücünün yettiği şeyle yükümlü kılar'. İnsanın eylemlerinden sorumlu tutulması, ancak kendi hür iradesi ve seçimiyle yapılması şartına bağlıdır."
+  },
+  {
+  "q": "İslam'da inancın bireye 'kabul ettirilme' biçimiyle ilgili kitabın ortaya koyduğu ana ilke aşağıdakilerden hangisidir?",
+  "opts": [
+  "İnanç, devleti yönetenlerin koyduğu kanunlarla insanlara benimsetilmelidir.",
+  "Doğru inancın yerleşmesi için bazı durumlarda zorlama kaçınılmazdır.",
+  "İnancın geçerli olması için herhangi bir araştırma veya samimiyet gerekmez, sadece dil ile söylenmesi her durumda yeterlidir.",
+  "Dinde zorlama yoktur; iman ancak kişinin hür tercihi ve gönüllü kabullenişine dayanıyorsa bir anlam taşır.",
+  "İman kalbe yerleşmese bile, kişinin ikna odalarında korkutulması Allah katında geçerli sayılır."
+  ],
+  "correct": 3,
+  "explanation": "Metinde zorla kabul ettirilen imanın geçerliliğinin olmadığı, dinde zorlama bulunmadığı ve hak ile batılın apaçık ayrıldığı, dileyenin iman edip dileyenin inkar edeceği vurgulanmıştır."
+  },
+  {
+  "q": "İnanan insanın işini sağlam yapması, tüm tedbirleri alması ve sonrasında sonucu Allah'a havale edip O'na güvenmesi anlamına gelen Kur'ani kavram aşağıdakilerden hangisidir?",
+  "opts": [
+  "Tevekkül",
+  "Huşu",
+  "Kaza",
+  "İtminan",
+  "Tefekkür"
+  ],
+  "correct": 0,
+  "explanation": "Kitapta inananların temel özelliklerinden birisinin işi sağlam yapıp sonucu yüce arşın sahibi olan Allah'a havale etmek olduğu ve bu duruma 'tevekkül' dendiği ayetlerle (O'ndan başka ilah yoktur, O'na tevekkül ettim) belirtilmiştir."
+  },
+  {
+  "q": "Allah'ın varlığının kanıtlanmasında ve insanın doğruyu bulmasında aklın rolü hakkında aşağıda verilen ifadelerden hangisi yanlıştır?",
+  "opts": [
+  "Akıl doğru inanca ulaşmada insana yol gösteren önemli bir araçtır.",
+  "İnsanların akıl kapasiteleri birbirinden farklı seviyelerde olabilir.",
+  "Akıl her şeyi kavrayabilecek sınırsız ve mutlak bir yeteneğe sahiptir.",
+  "Kavramakta zorlanılan veya duyuların ötesinde olan varlıklar akılla tam olarak anlaşılamayabilir.",
+  "Önyargısız bir akıl kişiyi hakikate ve doğru inanca yaklaştırır."
+  ],
+  "correct": 2,
+  "explanation": "Metinde aklın tek başına yeterli olamayacağı, bir sınırı olduğu ve duyu organlarının ötesindeki konularda (örneğin Allah'ın zatı) tek başına hakikati tüm boyutlarıyla kavrayamayacağı ifade edilmiştir."
+  },
+  {
+  "q": "Dini inanışların tarihsel süreci incelendiğinde, İslam inancını diğer semavi dinlerden (Yahudilik ve Hristiyanlık) farklı kılan güncel konumu nedir?",
+  "opts": [
+  "İslam'ın diğer dinlere göre çok daha sonradan ortaya çıkıp tamamen yeni kurallar koyması",
+  "Diğer dinlerin ilk çıktıklarında da baştan beri batıl olmaları, İslam'ın tek hak din olması",
+  "İslam gelene kadar semavi dinlerin insanları doğru yola sevk etmesi, ancak tahrif edilip bozulmaları nedeniyle yegane bozulmamış hak dinin İslam kalması",
+  "Hristiyanlık ve Yahudiliğin sadece belirli ırklara, İslam'ın ise sadece Araplara indirilmiş olması",
+  "İslam'ın inanç konularını hiçbir surette akılla temellendirmemeyi emretmesi"
+  ],
+  "correct": 2,
+  "explanation": "Metinde, Dinler tarihi sınıflamasıyla semavi sayılan Yahudilik ve Hristiyanlığın da aslen hak din oldukları, ancak sonradan insanların müdahalesiyle bozuldukları ve İslam'ın yeryüzündeki yegane bozulmamış din olduğu açıkça anlatılmıştır."
+  },
+  {
+  "q": "CERN laboratuvarlarında yapılan büyük hadron çarpıştırıcısı deneyleri ve Big Bang (büyük patlama) arayışları kitabın hangi ana argümanını desteklemek üzere örnek verilmiştir?",
+  "opts": [
+  "İnsanoğlunun bilimsel çalışmalarla inancın gereksizliğini ispatlama çabası",
+  "Bilimin sürekli olarak evrenin 'nasıl' yaratıldığını aradığı, ancak insanın doğasındaki asıl 'neden' arayışının inançla doyurulduğu",
+  "Fiziğin ancak hadron seviyesine indiğinde kader inancını anlayabileceği",
+  "Kainatın her zaman var olduğu, başlangıcının bulunmadığı teorisi",
+  "İslam alemindeki bilginlerin CERN deneylerini önceden haber verdiği tezi"
+  ],
+  "correct": 1,
+  "explanation": "Metinde bilim insanlarının (Tanrı parçacığı arayışı gibi) olayların nasıllığını bulmaya çalışması, asıl varoluşsal 'neden' sorusunun ancak din/inanç ekseninde cevap bulduğu gerçeğini açıklamak için kullanılmıştır."
+  },
+  {
+  "q": "İnanmanın insan hayatındaki psikolojik ve fizyolojik etkileri üzerine kitapta yer verilen bilimsel tespit aşağıdakilerden hangisidir?",
+  "opts": [
+  "İnançsız insanların zihinsel odaklanma seviyelerinin inananlara göre her zaman daha yüksek olduğu",
+  "Ciddi hastalıklara sahip olup dua eden hastaların, inançsız ve dua etmeyen hastalara göre daha hızlı ve fazla iyileştiğinin gözlemlenmesi",
+  "Psikolojik hastalıklarda sadece inancın yeterli olduğu, hiçbir tıbbi müdahaleye gerek duyulmadığı",
+  "İnanç sahibi insanların hastalıklara yakalanma ihtimalinin sıfıra indiği",
+  "Duanın sadece ruhsal bir ritüel olduğu ve fizyolojik hastalıklara hiçbir etkisinin olmadığı"
+  ],
+  "correct": 1,
+  "explanation": "Kitapta 'ciddi hastalıklar olup dua eden, inanca sahip olan hastaların dua etmeyenlere göre daha fazla veya daha hızlı iyileştiği' bilimsel çalışmalara atıfla belirtilmiştir."
+  },
+  {
+  "q": "Kitapta peygamberlerin, dinin anlaşılmasındaki konumlarıyla ilgili hangi özellikleri vurgulanmamıştır?",
+  "opts": [
+  "Allah'ın gönderdiği mesajları insanlara ulaştıran elçiler olmaları",
+  "İnsanın dünya ve ahiret hayatını anlamlandırmak için şartları hazırlamaları",
+  "Ölümsüz bir yapıya sahip olarak kıyamete kadar bizzat rehberlik etmeleri",
+  "Yolunu şaşıran insana Allah'ın bir lütfu ve yardımı olmaları",
+  "Kendi dönemlerindeki insanların inanç ve akıl dünyalarına hitap etmeleri"
+  ],
+  "correct": 2,
+  "explanation": "Peygamberler ölümlüdür. Metinde, onların vefatından sonra rehberliğin devam etmesi için Allah'ın kitaplar indirdiği ifade edilmiştir."
+  },
+  {
+  "q": "İslam dininde inanan bir kimsenin her gün beş vakit namaz kılması, zekat vermesi, yardımlaşması ve sosyal kurallara uyması hangi kavram bütünlüğü içinde değerlendirilir?",
+  "opts": [
+  "İtminan",
+  "Akaidin teorik çerçevesi",
+  "Tasdik süreci",
+  "İslam'ın yaşanması",
+  "Gizli şirk"
+  ],
+  "correct": 3,
+  "explanation": "Metinde ibadetlerden, toplumsal ilişkilere, yardımlaşmadan eğitime kadar her şeyin 'İslam'ın yaşanması' kavramıyla ifade edildiği zikredilir. İnanç sadece zihinsel bir kabul değil, pratik bir yaşayıştır."
+  },
+  {
+  "q": "Ölüm meleğinin canlıların ruhunu alması süreci dışında 'ruh' kavramının kitapta ele alınan niteliği aşağıdakilerden hangisidir?",
+  "opts": [
+  "Ruhun mahiyetinin ve tam yapısının Kur'an'da detaylarıyla anlatıldığı",
+  "Ruh çağırma seanslarında ruhların sadece geçmiş olayları haber verebileceği",
+  "Ruhun insanın fiziksel bedeniyle tamamen aynı kimyasal yapıda olduğu",
+  "Ruhların kıyametten önce de zaman zaman dünyayı serbestçe dolaşabildiği",
+  "İslam'da ruh kavramının sadece mecazi bir kullanım olduğu"
+  ],
+  "correct": 1,
+  "explanation": "Referans verilen 30 soruluk 21. sorunun (Ruh ile ilgili) içeriğinden de anlaşılacağı üzere, Kur'an ruhtan değişik biçimlerde söz etmiş, mahiyetine ilişkin tam bir bilgi vermemiş, ve ruhun geleceği bilemeyeceği vurgulanmıştır."
+  },
+  {
+  "q": "Amentü kavramı (iman esasları) ile ilgili olarak halk arasındaki yaygın kullanımı hangi gerçeği ifade etmektedir?",
+  "opts": [
+  "Amentünün sadece yaşlılık döneminde bilinmesi gereken bir ritüel olduğunu",
+  "İslam inancının temel şartlarını ve Müslüman olmanın ilkelerini toptan ve kısaca özetlediğini",
+  "Amentünün Kur'an'da yer almayıp çok sonradan uydurulan siyasi bir metin olduğunu",
+  "İmanın yalnızca melekler ve ahiret gününden ibaret olduğunu",
+  "Dinin sadece ahlaki prensiplerini içerip inanç boyutuyla ilgilenmediğini"
+  ],
+  "correct": 1,
+  "explanation": "Metinde iman esaslarının Müslüman olmanın temel şartı olduğu ve halk arasında 'amentü' olarak da bilindiği ifade edilerek inanç esaslarının bütününü kapsadığı belirtilir."
+  },
+  {
+  "q": "Evrenin sırlarını çözmeye çalışan akıl için 'Allah'ın zatını anlamaya çalışmak' niçin imkansız olarak değerlendirilmiştir?",
+  "opts": [
+  "Aklın duyu organlarıyla elde ettiği somut verilerle sınırlı çalışması ve Allah'ın zatının tüm algıların ötesinde yüce (soyut) olması",
+  "Evrendeki diğer varlıkların insanı bu düşünceden bilinçli olarak uzaklaştırması",
+  "Allah'ın zatını bilmenin dinde en büyük günah (şirk) olarak kabul edilmesi",
+  "Sadece peygamberlerin bu sırra erebileceği, diğer insanların aklının buna yasaklandığı",
+  "Zaman kavramının bu tür bir araştırmaya izin vermeyecek kadar hızlı akması"
+  ],
+  "correct": 0,
+  "explanation": "Metinde Allah'ın soyut bir varlık olduğu, insan algı ve duyularının ötesinde yer aldığı, dolayısıyla O'nun varlığının, isim ve sıfatlarının bilinebileceği ancak Zatı'nın kavranmasının insan kapasitesinin üstünde olduğu vurgulanır."
+  },
+  {
+  "q": "Kur'an-ı Kerim'in 'Oku' (İkra) emri ve ilim anlayışı düşünüldüğünde, okunması istenen ve bilginin hedefini oluşturan nesneler neleri kapsar?",
+  "opts": [
+  "Yalnızca dini metinleri ve yazılı eserleri",
+  "Sadece doğa bilimlerine ait teorik kitapları",
+  "Evreni, insanı, Kur'an'ı ve gerçekliğin (hakikatin) ta kendisini",
+  "Yalnızca peygamberlerin tarihsel hayat hikayelerini",
+  "Sadece ölümden sonraki ahiret hayatının safhalarını"
+  ],
+  "correct": 2,
+  "explanation": "Metne göre 'Oku' emrinin nesnesi, dış alem, insan, Kur'an'ın kendisi ve en nihayetinde gerçekliğin/hakikatin bütünüdür. İslam evren ile din bilgisini ayırmaz."
+  },
+  {
+  "q": "Bir Müslümanın kendi hayatında ve inancında hata veya günah işlediğinde, bunu gizlemek yerine ibadetlerini ve iyiliklerini dünyevi bir menfaat (örneğin makam, şöhret, övgü) için yapmasına ne ad verilir?",
+  "opts": [
+  "Açık inkâr",
+  "Fıtratın yozlaşması",
+  "Riya (Gösteriş) kaynaklı örtülü/gizli şirk",
+  "Tafsili münafıklık",
+  "Marifet eksikliği"
+  ],
+  "correct": 2,
+  "explanation": "Allah için yapılması gereken bir ameli veya ibadeti dünyevi beklentiler ve başkalarına gösteriş (riya) için yapmak gizli şirk (örtülü şirk) kapsamında değerlendirilmiştir."
+  },
+  {
+  "q": "Kur'an'da peygamberlere ve vahye verilen değer bağlamında, vahyin mahiyeti İslam epistemolojisinde (bilgi felsefesinde) ne olarak isimlendirilir?",
+  "opts": [
+  "İçgüdü",
+  "Zan",
+  "İlim",
+  "Kuruntu",
+  "Tasavvur"
+  ],
+  "correct": 2,
+  "explanation": "Metinde, Allah tarafından peygamberlere gönderilen vahyin doğrudan bir gerçeklik olduğu ve bizzat 'İlim' olarak nitelendiği ifade edilmiştir."
+  },
+  {
+  "q": "Ehl-i Kıble tabiri kimler için kullanılır ve İslam alimlerinin bu kişilere yaklaşımı nasıldır?",
+  "opts": [
+  "İslam'ı yeni kabul etmiş tecrübesiz kişilerdir, sadece namazlarını kılıp zekat vermezler.",
+  "Kabe'nin yönünü sürekli karıştıran cahil kimselerdir, sürekli uyarılmaları gerekir.",
+  "Namazda kıbleye yönelen Müslümanlardır ve alimler bu kişileri farklı/hatalı dini yorumlarından dolayı imansızlıkla (tekfir) suçlamaktan kaçınmışlardır.",
+  "Kabe'de doğup büyüyen özel bir sınıftır ve asla hata yapmayacaklarına inanılır.",
+  "Namaz kılmayan ancak kalbi temiz olan insanlardır, şirk koşmaları hoş görülür."
+  ],
+  "correct": 2,
+  "explanation": "Metinde 'Namazda kıbleye yönelen Ehl-i Kıble, imansızlıkla suçlanamaz, farklı görüşleri olsa dahi hataya nispet edilir ama inkarcı sayılmazlar' ilkesi belirtilmiştir."
+  },
+  {
+  "q": "Bir kişinin Allah'ı tam ve eksiksiz bir şekilde kavrayamadığı halde imanının geçerli olmasının sebebi nedir?",
+  "opts": [
+  "Çünkü Allah, kulun gücünün yettiğinden fazlasını ondan istemez ve O'nun isimlerini, varlığını bilmek iman için yeterlidir.",
+  "İmanın aslında anlamsız bir teslimiyet olmasından dolayı bilgiye hiç ihtiyaç duymaması.",
+  "Zaten ahiret hayatı gelene kadar kimsenin tam iman edemeyecek olması.",
+  "Kişinin sadece ailesinin dini inançlarını taklit etmesinin yeterli bir kurtuluş sayılması.",
+  "İnancın sadece bir duygu durumu olup bilme eylemiyle hiçbir bağının bulunmaması."
+  ],
+  "correct": 0,
+  "explanation": "Metinde insanın Allah'ın zatını kavramasının mümkün olmadığı, ancak O'nu isim ve sıfatlarıyla tanımasının (marifetullah) insan gücü dahilinde olduğu ve Allah'ın kimseyi gücünün yetmeyeceği bir şeyle yükümlü tutmayacağı belirtilir."
+  },
+  {
+  "q": "Toplumsal düzeni bozan ve insanlar arasında ayrımcılık yaratan 'başkalarını imansızlıkla suçlama' (Tekfir) illetinin temelinde yatan en büyük yanılgı nedir?",
+  "opts": [
+  "Diğer inanç sistemlerinin İslam'dan daha hoşgörülü olduğu zannı",
+  "Kalpteki onayın ve imanın boyutunun sanki insanlar tarafından dışarıdan mutlak bir kesinlikle bilinebileceği düşüncesi",
+  "Sadece peygamberlerin tekfir etme hakkına sahip olduğunun unutulması",
+  "Dini bilginin kitaplardan çok rüyalarla öğrenilebileceği yanılgısı",
+  "Kur'an ayetlerinin sadece ibadetlerden bahsettiğini düşünme hatası"
+  ],
+  "correct": 1,
+  "explanation": "Metne göre iman kalbe aittir ve kişinin diliyle inkar etmediği sürece başkasının onun iman edip etmediğini kalbini yarıp bilemeyeceği için kolayca imansızlıkla suçlamak büyük bir yanılgı ve tehlikedir."
+  },
+  {
+  "q": "Kur'an'a göre, bilgi sahibi olmadıkları, doğruluk derecesi asılsız kaynaklara dayanan şeylere inanan insanların durumu hangi kavrama karşılık gelir?",
+  "opts": [
+  "Tevekkül",
+  "Hidayet",
+  "Zan (Heva)",
+  "İlim",
+  "Hikmet"
+  ],
+  "correct": 2,
+  "explanation": "Kur'an, sağlam kaynağa dayanmayan, belirsizlik barındıran, kuşku içeren bilgi kırıntılarına 'zan' ve kişisel arzulara 'heva' demektedir."
+  },
+  {
+  "q": "Dünya hayatının anlamı ve bireyin varoluş gayesi bağlamında İslam inancının insana sunduğu temel vizyon nedir?",
+  "opts": [
+  "Dünyanın bir ceza yeri olduğu ve hiçbir güzelliğinden faydalanılmaması gerektiği",
+  "Sadece ahiret saadetinin önemli olduğu, insanın dünyada her türlü zulme sessiz kalması gerektiği",
+  "Sorumluluk sahibi bir varlık olarak, Allah'a kulluk bilinciyle yaşayıp yeryüzünde iyiliği hakim kılmak",
+  "Diğer canlılardan hiçbir farkımız olmadığı için sadece içgüdülerimizle bedensel hazları tatmin etmek",
+  "Dünyanın sadece zenginlik ve güç kazanmak için hazırlanmış rekabetçi bir alan olduğu"
+  ],
+  "correct": 2,
+  "explanation": "Kitap baştan sona insanın akıl ve iradesiyle sorumluluk taşıdığını, Allah'a kulluk için yaratıldığını, iyi ile kötü arasında tercih yapıp iyiliği seçerek hayatını anlamlandırması gerektiğini işlemektedir."
+  },
+
+  {
+    "q": "Meleklerin varlığına iman ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    "opts": [
+      "Melekler, Allah’ın kendilerine verdiği emirlere asla isyan etmezler.",
+      "Gözle görülmemeleri, onların yokluğuna kanıt teşkil etmez.",
+      "Melekler, nurdan yaratılmış, yeme içme gibi ihtiyaçları olmayan varlıklardır.",
+      "İradeleri sayesinde hayır ile şer arasında seçim yaparak imtihan edilirler.",
+      "Meleklerin varlığına inanmak, iman esaslarından biridir."
+    ],
+    "correct": 3,
+    "explanation": "Meleklerin insanlardaki gibi bir iradesi yoktur; onlar sadece Allah’ın emirlerini yerine getirmekle yükümlüdürler ve imtihana tabi değildirler."
+  },
+  {
+    "q": "Vahiy ile ilgili; \nI. Allah’ın dilediği emir ve yasakları peygamberlerine bildirmesidir.\nII. Sadece yazılı kitaplar şeklinde gönderilmiştir.\nIII. İnsan aklının tek başına ulaşamayacağı gaybi bilgileri içerir.\nİfadelerinden hangisi veya hangileri doğrudur?",
+    "opts": [
+      "Yalnız I",
+      "I ve II",
+      "I ve III",
+      "II ve III",
+      "I, II ve III"
+    ],
+    "correct": 2,
+    "explanation": "Vahiy sadece yazılı kitaplar (suhuf veya kitap) değil, aynı zamanda peygamberlerin kalbine ilham edilen sözler ve bildirimler şeklinde de olabilir. I ve III. öncüller vahiyle ilgili temel doğrulardır."
+  },
+  {
+    "q": "Peygamberlerin sıfatlarından olan 'Sıdk' kavramının anlamı aşağıdakilerden hangisidir?",
+    "opts": [
+      "Günah işlememek, günahtan korunmuş olmak",
+      "Her zaman doğru olmak, asla yalan söylememek",
+      "Allah'tan aldığı mesajları eksiksiz iletmek",
+      "Akıllı ve feraset sahibi olmak",
+      "Güvenilir olmak, emanete hıyanet etmemek"
+    ],
+    "correct": 1,
+    "explanation": "Sıdk sıfatı, peygamberlerin özü ve sözüyle doğru olduklarını, hayatlarının hiçbir döneminde yalan söylemediklerini ifade eder."
+  },
+  {
+    "q": "İlahi kitaplarla ilgili aşağıdaki eşleştirmelerden hangisi yanlıştır?",
+    "opts": [
+      "Tevrat - Hz. Musa",
+      "Zebur - Hz. Davud",
+      "İncil - Hz. İsa",
+      "Kur’ân-ı Kerîm - Hz. Muhammed (sas)",
+      "Suhuflar - Hz. Nuh"
+    ],
+    "correct": 4,
+    "explanation": "Hz. Nuh'a müstakil bir kitap veya bilinen anlamda suhuflar verildiğine dair kesin bir bilgi yoktur; suhuflar Hz. Adem, Hz. Şit, Hz. İdris ve Hz. İbrahim'e verilmiştir."
+  },
+  {
+    "q": "Kıyametin kopuşu ve yeniden diriliş ile ilgili süreç düşünüldüğünde, 'Bâs' kavramı neyi ifade eder?",
+    "opts": [
+      "Dünya hayatının sona ermesi için sura üflenmesini",
+      "Hesap görüldükten sonra cennete girilmesini",
+      "Öldükten sonra Allah tarafından yeniden diriltilmeyi",
+      "Amellerin tartılacağı adalet terazisini",
+      "Günahkar olanların cehennemde kalacağı süreyi"
+    ],
+    "correct": 2,
+    "explanation": "Bâs, öldükten sonra kabirlerden kalkıp Allah’ın huzuruna çıkmak üzere yeniden diriltilmeyi ifade eden bir terimdir."
+  },
+  {
+    "q": "Aşağıdakilerden hangisi bir müminin ahiret inancına sahip olmasının dünya hayatına etkilerinden biri değildir?",
+    "opts": [
+      "Yaptığı her işin hesabını vereceği bilinciyle dürüst davranır.",
+      "Zulme uğradığında adaletin mutlak sağlanacağı inancıyla teselli bulur.",
+      "Sadece ahiret için yaşayarak dünya işlerinden tamamen elini eteğini çeker.",
+      "Ölümün bir yok oluş değil, yeni bir başlangıç olduğunu bilerek metanetli olur.",
+      "Sorumluluk duygusu gelişir ve başkalarının hakkına riayet eder."
+    ],
+    "correct": 2,
+    "explanation": "İslam akaidinde 'dünya ahiretin tarlasıdır' ilkesi vardır; ahiret inancı dünyadan kopmayı değil, dünyayı ahiret bilinciyle daha düzenli ve ahlaklı yaşamayı gerektirir."
+  },
+  {
+    "q": "Kaza ve Kader inancı ile ilgili olarak aşağıdaki ifadelerden hangisi yanlıştır?",
+    "opts": [
+      "Kader, Allah'ın her şeyi önceden bilip planlamasıdır.",
+      "Kaza, Allah'ın planladığı olayların vakti gelince gerçekleşmesidir.",
+      "İnsan, kaderinde ne yazılıysa onu yaptığı için yaptıklarından sorumlu değildir.",
+      "Kader inancı, Allah'ın ilim ve kudret sıfatlarıyla doğrudan ilgilidir.",
+      "İnsanın cüz-i iradesi, kader planı içerisinde bir tercih yapma imkanıdır."
+    ],
+    "correct": 2,
+    "explanation": "Kader, insanın iradesini yok saymaz. İnsan cüz-i iradesiyle seçim yapar, Allah da külli iradesiyle yaratır; bu yüzden insan sorumludur."
+  },
+  {
+    "q": "Aşağıdakilerden hangisi peygamberlerin gönderiliş amaçlarından biri değildir?",
+    "opts": [
+      "İnsanlara Allah'ın varlığını ve birliğini bildirmek",
+      "İbadetlerin nasıl yapılacağını uygulamalı olarak göstermek",
+      "Toplumsal adaleti ve güzel ahlakı yerleştirmek",
+      "İnsanların gaybı (geleceği) tam olarak bilmelerini sağlamak",
+      "Ahiret hayatı ve hesap günü hakkında uyarıda bulunmak"
+    ],
+    "correct": 3,
+    "explanation": "Peygamberler ancak Allah'ın bildirdiği kadar gaybı bilebilirler; insanlara gaybın anahtarlarını vermek veya geleceği tam bildirmek gibi bir görevleri yoktur."
+  },
+  {
+    "q": "Ölümden sonraki hayatın aşamaları düşünüldüğünde, 'Berzah' kavramı hangi iki süreci birbirinden ayırır?",
+    "opts": [
+      "Dünya hayatı ile kabir hayatını",
+      "Ölüm ile yeniden diriliş (kıyamet) arasındaki dönemi",
+      "Cennet ile cehennem arasındaki bölgeyi",
+      "Hesap ile mizan arasındaki süreyi",
+      "Sırat köprüsü ile mizan arasındaki mesafeyi"
+    ],
+    "correct": 1,
+    "explanation": "Berzah, ölümle başlayıp yeniden diriliş (Ba's) vaktine kadar sürecek olan kabir hayatı dönemine verilen addır."
+  },
+  {
+    "q": "Amellerin manevi terazide tartılmasına ne ad verilir?",
+    "opts": [
+      "Haşir",
+      "Mizan",
+      "Mahşer",
+      "Sırat",
+      "Amel Defteri"
+    ],
+    "correct": 1,
+    "explanation": "Mizan, ahirette insanların sevap ve günahlarının tartılacağı ilahi adalet terazisidir."
+  },
+  {
+    "q": "I. Allah’ın emirlerini ulaştırmada meleklerin aracı olması\nII. Vahyin peygamberin kalbine doğrudan ilka edilmesi\nIII. Peygamberin, Allah ile perde arkasından konuşması\nYukarıdakilerden hangileri vahyin geliş şekillerindendir?",
+    "opts": [
+      "Yalnız I",
+      "I ve II",
+      "II ve III",
+      "I ve III",
+      "I, II ve III"
+    ],
+    "correct": 4,
+    "explanation": "Vahiy bazen Cebrail (as) aracılığıyla, bazen rüyada, bazen doğrudan kalbe ilhamla, bazen de Hz. Musa örneğinde olduğu gibi perde arkasından hitap ile gerçekleşebilir."
+  },
+  {
+    "q": "Kur’ân-ı Kerîm’in diğer ilahi kitaplardan ayrılan en temel özelliği aşağıdakilerden hangisidir?",
+    "opts": [
+      "Sadece Araplara gönderilmiş olması",
+      "Sadece ahiret hayatından bahsetmesi",
+      "İnزالinden itibaren hiçbir değişikliğe uğramadan günümüze kadar korunması",
+      "Hükümlerinin sadece o dönemdeki sorunlara çözüm üretmesi",
+      "İçinde hiçbir peygamber kıssasının bulunmaması"
+    ],
+    "correct": 2,
+    "explanation": "Kur’an, Allah’ın koruması altındadır (Hicr, 9) ve tahrif edilmeden günümüze ulaşan tek ilahi kitaptır; ayrıca evrenseldir."
+  },
+  {
+    "q": "Peygamberlerin sıfatlarından olan 'Tebliğ' ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    "opts": [
+      "Allah'tan alınan mesajların insanlara ulaştırılmasıdır.",
+      "Peygamberler mesajları ulaştırırken kendi yorumlarını katarak değiştirirler.",
+      "Mesajın ulaştırılmasında herhangi bir eksiltme veya artırma yapılamaz.",
+      "Tebliğ, peygamberlerin en temel görevidir.",
+      "Peygamberler tebliğ görevini yaparken hiçbir kimseden korkmazlar."
+    ],
+    "correct": 1,
+    "explanation": "Tebliğ, vahiyleri olduğu gibi, hiçbir ekleme veya çıkarma yapmadan insanlara duyurmaktır; peygamberin kendi yorumu 'tebyin' (açıklama) kısmına girer, tebliğe dahil değildir."
+  },
+  {
+    "q": "İnsanın fiilleri ve kaderiyle ilgili olarak; 'İnsan, rüzgarın önündeki yaprak gibidir, hiçbir iradesi yoktur' diyen aşırı kaderci görüş aşağıdakilerden hangisidir?",
+    "opts": [
+      "Mutezile",
+      "Maturidi",
+      "Eş'ari",
+      "Cebriye",
+      "Şia"
+    ],
+    "correct": 3,
+    "explanation": "Cebriye ekolü, insanın iradesini tamamen reddeder ve her şeyin Allah tarafından zorunlu olarak yaptırıldığını savunur."
+  },
+  {
+    "q": "Ölüm anında insanın yanına gelerek ruhunu teslim alan, dört büyük melekten biri olan melek hangisidir?",
+    "opts": [
+      "Cebrail",
+      "Mikail",
+      "İsrafil",
+      "Azrail",
+      "Rıdvan"
+    ],
+    "correct": 3,
+    "explanation": "Azrail (as), 'Melekü’l-Mevt' (Ölüm Meleği) olarak bilinir ve eceli gelenlerin ruhunu kabzetmekle görevlidir."
+  },
+  {
+    "q": "İslam’ın 'Tevhid' ilkesi düşünüldüğünde, aşağıdaki tutumlardan hangisi bu ilkeye aykırıdır?",
+    "opts": [
+      "Sadece Allah'tan yardım dilemek",
+      "İbadetleri sadece Allah rızası için yapmak",
+      "Doğrudan veya dolaylı olarak yaratılmış varlıklara kutsiyet atfedip onlardan medet ummak",
+      "Esma-i Hüsna ile Allah’a dua etmek",
+      "Allah'ın eşi ve benzeri olmadığına kalpten inanmak"
+    ],
+    "correct": 2,
+    "explanation": "Tevhid, Allah'ı birlemek ve O'na hiçbir şeyi ortak koşmamaktır. Yaratılmışlardan (türbe, şahıs, nesne vb.) ilahi güç beklemek şirktir."
+  },
+  {
+    "q": "Kur’ân-ı Kerîm’de ismi geçtiği halde peygamber olup olmadığı konusunda alimler arasında ihtilaf bulunan isimler hangi şıkta doğru verilmiştir?",
+    "opts": [
+      "Hz. İbrahim - Hz. İsmail - Hz. İshak",
+      "Hz. Üzeyir - Hz. Lokman - Hz. Zülkarneyn",
+      "Hz. Hud - Hz. Salih - Hz. Şuayb",
+      "Hz. Yahya - Hz. Zekeriya - Hz. İsa",
+      "Hz. Adem - Hz. Şit - Hz. İdris"
+    ],
+    "correct": 1,
+    "explanation": "Üzeyir, Lokman ve Zülkarneyn (as) isimleri Kur'an'da geçer ancak onların peygamber mi yoksa 'veli kul' mu olduğu konusunda farklı görüşler vardır."
+  },
+  {
+    "q": "Kıyametin kopmasından sonra insanların toplanacağı o büyük meydana ne ad verilir?",
+    "opts": [
+      "Araf",
+      "Mahşer",
+      "Cennet",
+      "Sırat",
+      "Kevser"
+    ],
+    "correct": 1,
+    "explanation": "Mahşer, yeniden diriltilen insanların hesap vermek üzere toplandıkları geniş alana verilen isimdir."
+  },
+  {
+    "q": "Aşağıdakilerden hangisi 'İsmet' sıfatının peygamberlerin hayatındaki bir yansımasıdır?",
+    "opts": [
+      "Ticarette dürüst olmaları",
+      "Allah'tan gelen her bilgiyi anlamaları",
+      "Büyük ve küçük tüm günahlardan korunmuş olmaları",
+      "Zorluklara karşı sabırlı davranmaları",
+      "Gelecekteki olayları rüyalarında görmeleri"
+    ],
+    "correct": 2,
+    "explanation": "İsmet, peygamberlerin Allah tarafından günah işlemekten korunmuş olmaları sıfatıdır."
+  },
+  {
+    "q": "İslam akaidinde 'Ecel' kavramı ile ilgili doğru ifade aşağıdakilerden hangisidir?",
+    "opts": [
+      "İnsan dikkat ederse ecelini uzatabilir.",
+      "Allah eceli önceden belirlememiştir, olaylara göre değişir.",
+      "Ecel, hayat süresinin sona erdiği, Allah tarafından takdir edilen vakittir.",
+      "Sadece yaşlanan insanların eceli gelir.",
+      "Kaza sonucu ölenlerin eceli henüz gelmemiştir."
+    ],
+    "correct": 2,
+    "explanation": "İslam inancına göre ecel ne bir an ileri alınabilir ne de bir an geri bırakılabilir; o, Allah’ın takdir ettiği kesin vakittir."
+  },
+  {
+    "q": "I. Yazıcı melekler (Kirâmen Kâtibîn)\nII. Kabirde soru soran melekler (Münker-Nekir)\nIII. Cennet ve Cehennem melekleri\nYukarıdaki melek görevlerinden hangileri ahiret süreci ile doğrudan ilişkilidir?",
+    "opts": [
+      "Yalnız I",
+      "Yalnız III",
+      "I ve II",
+      "II ve III",
+      "I, II ve III"
+    ],
+    "correct": 4,
+    "explanation": "Kirâmen Kâtibîn amel defterini hazırlar (hesap için), Münker-Nekir kabirde sorgular, Rıdvan ve Malik ise cennet/cehennemde görevlidir; hepsi ahiret süreciyle ilgilidir."
+  },
+  {
+    "q": "Peygamberlerin 'Fetanet' sıfatı neyi ifade eder?",
+    "opts": [
+      "Allah’ın emirlerini yayma gücünü",
+      "Yüksek zeka, çabuk kavrayış ve ikna kabiliyetini",
+      "İnsanlara karşı çok merhametli olmayı",
+      "Fiziksel olarak çok güçlü olmayı",
+      "Zenginlikten kaçınıp mütevazı yaşamayı"
+    ],
+    "correct": 1,
+    "explanation": "Fetanet, peygamberlerin davasını anlatırken ihtiyaç duydukları üstün akıl ve kavrayış yeteneğidir."
+  },
+  {
+    "q": "Aşağıdaki durumlardan hangisi kader inancını yanlış anlayan birinin söylemi olabilir?",
+    "opts": [
+      "Tedbir bizden, takdir Allah'tandır.",
+      "Eşeğini sağlam kazığa bağla, sonra tevekkül et.",
+      "Kaderimde başarısızlık varmış, çalışsam da bir şey değişmez.",
+      "Rızık Allah'tandır ancak çalışmak farzdır.",
+      "Hastalandığımda doktora gitmeliyim, şifayı Allah verir."
+    ],
+    "correct": 2,
+    "explanation": "Çalışmayı ve tedbiri reddederek suçu kadere atmak, İslam'daki 'cüz-i irade' ve 'tevekkül' anlayışına terstir."
+  },
+  {
+    "q": "Kur’ân-ı Kerîm’in müteşabih ayetleri hakkında ne söylenebilir?",
+    "opts": [
+      "Anlamı herkes tarafından kolayca anlaşılan açık hükümlerdir.",
+      "Sadece peygamberlerin hayatını anlatan ayetlerdir.",
+      "Anlamı kapalı olan, farklı yorumlara açık veya sadece Allah’ın bildiği ayetlerdir.",
+      "İçinde sadece miras hukuku bulunan ayetlerdir.",
+      "Okunması vacip olan secde ayetleridir."
+    ],
+    "correct": 2,
+    "explanation": "Muhkem ayetler açık ve kesin hükümlüdür; müteşabih ayetler ise derin manalı ve yoruma muhtaç olanlardır."
+  },
+  {
+    "q": "Meleklerin görevleri düşünüldüğünde, doğa olaylarını ve rızıkları yönetmekle görevli melek aşağıdakilerden hangisidir?",
+    "opts": [
+      "Cebrail",
+      "Azrail",
+      "Mikail",
+      "İsrafil",
+      "Münker"
+    ],
+    "correct": 2,
+    "explanation": "Mikail (as), tabiat olaylarının düzenlenmesi ve mahlukatın rızıklarının ulaştırılmasıyla görevli büyük melektir."
+  },
+  {
+    "q": "Peygamberlerin gösterdiği mucizelerle ilgili aşağıdaki bilgilerden hangisi yanlıştır?",
+    "opts": [
+      "Mucize, Allah’ın izni ve yaratmasıyla gerçekleşir.",
+      "Mucizenin amacı peygamberin davasını ispatlamaktır.",
+      "Peygamberler istedikleri her an, Allah'tan bağımsız mucize gösterebilirler.",
+      "Mucizeler genellikle o dönemin en ileri gelen ilim/sanat dalına uygun olur.",
+      "Mucize, tabiat kanunlarını aşan olağanüstü bir olaydır."
+    ],
+    "correct": 2,
+    "explanation": "Peygamberler kendi başlarına mucize yaratamazlar; mucize sadece Allah'ın dilemesi ve yaratmasıyla, peygamberin elinde tezahür eder."
+  },
+  {
+    "q": "İslam inancına göre öldükten sonra kabirde insanlara soru soracak olan melekler hangileridir?",
+    "opts": [
+      "Hafaza melekleri",
+      "Kirâmen Kâtibîn",
+      "Münker ve Nekir",
+      "Mukarrebîn melekleri",
+      "Hamele-i Arş"
+    ],
+    "correct": 2,
+    "explanation": "Münker ve Nekir, kabirde 'Rabbin kim? Peygamberin kim? Dinin ne?' gibi soruları sormakla görevli meleklerdir."
+  },
+  {
+    "q": "Ahirette amellerin tartılması sonucunda sevabı günahından ağır gelenlerin alacağı sonuç aşağıdakilerden hangisidir?",
+    "opts": [
+      "Araf bölgesinde bekletilmek",
+      "Doğrudan cennete girmek",
+      "Cehennemde bir süre ceza çekmek",
+      "Dünyaya tekrar gönderilmek",
+      "Toprak olup yok olmak"
+    ],
+    "correct": 1,
+    "explanation": "Kur'an'a göre tartıları (sevapları) ağır gelenler kurtuluşa erecek ve cennete gireceklerdir."
+  },
+  {
+    "q": "Peygamberlerin insanlardan seçilmesinin en önemli hikmeti nedir?",
+    "opts": [
+      "Meleklerin dünya şartlarına uyum sağlayamaması",
+      "İnsanların meleklere inanmakta zorlanacak olması",
+      "Peygamberin insanlara her konuda (ibadet, ahlak, sosyal yaşam) örnek teşkil edebilmesi",
+      "İnsanların sadece kendi cinsinden olanlara itaat etmesi",
+      "Vahyin sadece insan beyni tarafından algılanabilmesi"
+    ],
+    "correct": 2,
+    "explanation": "Peygamber sadece bir postacı değil, aynı zamanda yaşayan bir modeldir. Melek olsaydı insanlar 'o melek, biz yapamayız' diyerek mazeret üretebilirlerdi."
+  },
+  {
+    "q": "Ahirete iman ile ilgili aşağıdakilerden hangisi yanlıştır?",
+    "opts": [
+      "Sadece Müslümanlar değil, tüm insanlar hesaba çekilecektir.",
+      "Ahiret hayatı sonsuz (ebedi) bir hayattır.",
+      "Kişi dünyada ne ektiyse ahirette onu biçecektir.",
+      "Ahirette torpil veya haksız bir kayırma mümkün değildir.",
+      "Ahirete inanmayan biri, diğer iman esaslarına tam inansa da mümin sayılır."
+    ],
+    "correct": 4,
+    "explanation": "İman bir bütündür; ahiret inancı imanın şartlarından biridir. Birini reddeden kişi İslam akaidine göre mümin sayılmaz."
+  },
+  {
+    "q": "I. Doğru bilgi (İlim)\nII. Sağlıklı duyular (Selim Duyular)\nIII. Önyargısız akıl (Selim Akıl)\nİslam akaidine göre yukarıdakilerden hangileri bilgi kaynaklarındandır?",
+    "opts": [
+      "Yalnız I",
+      "I ve II",
+      "II ve III",
+      "I ve III",
+      "I, II ve III"
+    ],
+    "correct": 4,
+    "explanation": "İslam'da bilgi kaynakları 'havass-ı selime' (beş duyu), 'akl-ı selim' ve 'haber-i sadık' (vahiyler/peygamber haberleri) olarak üç ana başlıkta toplanır."
+  },
+  {
+    "q": "Kader ve kaza inancı kapsamında, insanın elinde olmayan, tamamen Allah'ın takdiriyle gerçekleşen (boy, soy, doğum yeri vb.) alana ne ad verilir?",
+    "opts": [
+      "Cüz-i İrade",
+      "İztırari (Zorunlu) Kader",
+      "Kezb",
+      "İhtiyari (İsteğe bağlı) Kader",
+      "Kesb"
+    ],
+    "correct": 1,
+    "explanation": "İztırari kader, insanın müdahale edemediği, yaratılıştan gelen ve iradesi dışında olan kader alanıdır."
+  },
+  {
+    "q": "Aşağıdakilerden hangisi ahiret hayatının evrelerinden biri olan 'Haşir'in tanımıdır?",
+    "opts": [
+      "Amellerin kaydedilmesi",
+      "Kıyamet günü dirilenlerin mahşer meydanına doğru sevk edilip toplanması",
+      "Günahların bağışlanması",
+      "Cennet meyvelerinden tadılması",
+      "Dünyadaki kötülerin cezalandırılması"
+    ],
+    "correct": 1,
+    "explanation": "Haşir, dirilişten sonra hesap vermek üzere toplanma eylemine denir."
+  },
+  {
+    "q": "İlahi kitapların gönderiliş sırası aşağıdakilerden hangisinde doğru verilmiştir?",
+    "opts": [
+      "Tevrat - İncil - Zebur - Kur’an",
+      "Tevrat - Zebur - İncil - Kur’an",
+      "Zebur - Tevrat - İncil - Kur’an",
+      "İncil - Tevrat - Zebur - Kur’an",
+      "Tevrat - İncil - Kur’an - Zebur"
+    ],
+    "correct": 1,
+    "explanation": "Tevrat (Hz. Musa), Zebur (Hz. Davud), İncil (Hz. İsa) ve son olarak Kur’an (Hz. Muhammed sas) sırasıyla indirilmiştir."
+  },
+  {
+    "q": "Ahiret hayatında günahkar müminlerin durumu ile ilgili Ehl-i Sünnet inancı nasıldır?",
+    "opts": [
+      "Ebediyen cehennemde kalacaklardır.",
+      "Asla cehenneme girmezler, doğrudan affedilirler.",
+      "Cezalarını çektikten sonra imanları sayesinde cennete gireceklerdir.",
+      "Onlar artık mümin sayılmazlar.",
+      "Durumları sadece peygamberin şefaatine bağlıdır, şefaat yoksa yok olurlar."
+    ],
+    "correct": 2,
+    "explanation": "Ehl-i Sünnet inancına göre kalbinde zerre miktar iman olan kişi, günahının cezasını çektikten veya Allah'ın affına/şefaate nail olduktan sonra cennete girer."
+  },
+  {
+    "q": "Aşağıdaki meleklerden hangisi vahiyleri peygamberlere getirmekle görevlidir?",
+    "opts": [
+      "Mikail",
+      "İsrafil",
+      "Cebrail",
+      "Azrail",
+      "Malik"
+    ],
+    "correct": 2,
+    "explanation": "Cebrail (as), Allah ile peygamberler arasında elçilik yapan vahy meleğidir."
+  },
+  {
+    "q": "Peygamberlerin sıfatlarından olan 'Emanet'in zıddı olan ve peygamberlerde bulunması imkansız olan özellik nedir?",
+    "opts": [
+      "Kezb (Yalan söylemek)",
+      "Hıyanet (Güveni kötüye kullanmak)",
+      "Zellet (Hata yapmak)",
+      "Beladet (Anlayışsızlık)",
+      "Kitman (Mesajı gizlemek)"
+    ],
+    "correct": 1,
+    "explanation": "Emanet güvenilir olmak demektir; zıddı olan hıyanet ise peygamberler için imkansız bir sıfattır."
+  },
+  {
+    "q": "Kur’ân-ı Kerîm’in evrensel bir kitap olması ne anlama gelir?",
+    "opts": [
+      "Sadece geçmiş kavimlerin hikayelerini anlatması",
+      "Sadece bilimsel gerçeklerden bahsetmesi",
+      "Tüm zamanlara ve tüm insanlığa hitap eden mesajlar içermesi",
+      "Dilinin her millet tarafından doğal olarak bilinmesi",
+      "İçindeki hükümlerin sürekli değişmesi"
+    ],
+    "correct": 2,
+    "explanation": "Evrensellik, Kur’an'ın belirli bir bölge veya zamanla sınırlı olmayıp, kıyamete kadar tüm insanlık için rehber olmasıdır."
+  },
+  {
+    "q": "Kıyamet günü sura üflemekle görevli melek aşağıdakilerden hangisidir?",
+    "opts": [
+      "Cebrail",
+      "Azrail",
+      "Mikail",
+      "İsrafil",
+      "Münker"
+    ],
+    "correct": 3,
+    "explanation": "İsrafil (as), sur denilen alete iki kez üflemekle görevli olan büyük melektir."
+  },
+  {
+    "q": "Aşağıdakilerden hangisi 'İlahi Kitaplara İman'ın bir gereği değildir?",
+    "opts": [
+      "Tüm kitapların asıllarının Allah’tan geldiğine inanmak",
+      "Kur’an’ın önceki kitapların hükmünü kaldırdığını (nesh) kabul etmek",
+      "Bugünkü tahrif edilmiş Tevrat ve İncil'in her kelimesine uymak",
+      "Suhufların da ilahi vahiy olduğunu kabul etmek",
+      "Kur’an’ın son ilahi kitap olduğuna inanmak"
+    ],
+    "correct": 2,
+    "explanation": "Müslümanlar önceki kitapların asıllarına inanırlar ancak bugünkü hallerinin değiştirildiğini bildikleri için onlarla amel etmezler."
+  },
+  {
+    "q": "Peygamberlerin 'Ülü’l-Azm' olarak adlandırılması neyi ifade eder?",
+    "opts": [
+      "Sadece genç yaşta vefat eden peygamberleri",
+      "Kendisine kitap verilmiş olan tüm peygamberleri",
+      "Sabır, azim ve kararlılık bakımından en önde gelen büyük peygamberleri",
+      "Aynı dönemde yaşayan peygamberleri",
+      "Sadece Arap olan peygamberleri"
+    ],
+    "correct": 2,
+    "explanation": "Ülü’l-Azm (Azim sahipleri); Hz. Nuh, Hz. İbrahim, Hz. Musa, Hz. İsa ve Hz. Muhammed (sas) için kullanılan bir tabirdir."
+  },
+  {
+    "q": "Ahirette amellerin yazılı olduğu belgelerin (karne gibi) insanlara verilmesine ne ad verilir?",
+    "opts": [
+      "Mizan",
+      "Sırat",
+      "Amel Defteri",
+      "Tevhid",
+      "İhlas"
+    ],
+    "correct": 2,
+    "explanation": "İnsanların dünyada yaptıkları her şey melekler tarafından kaydedilir ve ahirette 'amel defteri' olarak kendilerine sunulur."
+  },
+  {
+    "q": "İnsan iradesi ile ilgili 'Kesb' kavramı neyi ifade eder?",
+    "opts": [
+      "Allah'ın zorla yaptırmasını",
+      "İnsanın bir işe yönelip onu tercih etmesi ve kazanmasını",
+      "İnsanın hiçbir sorumluluğunun olmamasını",
+      "Her şeyin tesadüfen gerçekleşmesini",
+      "İnsanın kendi kaderini Allah'tan bağımsız yaratmasını"
+    ],
+    "correct": 1,
+    "explanation": "Maturidi akaidinde 'kesb', insanın özgür iradesiyle bir fiili yapmaya karar vermesi ve ona yönelmesidir."
+  },
+  {
+    "q": "Peygamberlerin sıfatlarından olan 'Tebliğ' sıfatının zıddı aşağıdakilerden hangisidir?",
+    "opts": [
+      "Kezb",
+      "Hıyanet",
+      "Beladet",
+      "Kitman",
+      "Zellet"
+    ],
+    "correct": 3,
+    "explanation": "Kitman, Allah’tan gelen vahyi gizlemek veya insanlara duyurmamaktır ki bu peygamberler için imkansızdır."
+  },
+  {
+    "q": "Cehennemin bekçisi ve yöneticisi olan meleğin adı nedir?",
+    "opts": [
+      "Rıdvan",
+      "Malik",
+      "Münker",
+      "Azrail",
+      "Hârut"
+    ],
+    "correct": 1,
+    "explanation": "Malik, cehennem meleklerinin başıdır. Rıdvan ise cennet meleklerinin başıdır."
+  },
+  {
+    "q": "I. Akıl sağlığı\nII. Ergenlik çağına girmiş olmak\nIII. Peygamberin mesajından haberdar olmak\nİslam akaidine göre bir kişinin dini sorumluluğunun (mükellefiyet) başlaması için hangileri şarttır?",
+    "opts": [
+      "Yalnız I",
+      "I ve II",
+      "II ve III",
+      "I ve III",
+      "I, II ve III"
+    ],
+    "correct": 4,
+    "explanation": "Dini sorumluluk için akıl ve baliğ olmak temel şarttır; ayrıca 'fetret ehli' (mesajın ulaşmadığı kişiler) sorumlu tutulmaz, dolayısıyla mesajın ulaşması da gerekir."
+  },
+  {
+    "q": "Ahiret inancının kişiye kazandırdığı 'Sorumluluk Bilinci' aşağıdakilerden hangisiyle en iyi açıklanır?",
+    "opts": [
+      "Başkalarına karşı üstünlük kurma isteği",
+      "Kimse görmese bile Allah'ın her şeyi bildiği ve bir gün hesap soracağı inancı",
+      "Sadece yaşlılıkta ibadet etme düşüncesi",
+      "Dünyevi cezalardan korktuğu için suç işlememek",
+      "Kendi çıkarlarını her şeyin üstünde tutmak"
+    ],
+    "correct": 1,
+    "explanation": "Ahiret inancı, içsel bir denetim mekanizmasıdır; insan görünürde otorite olmasa bile 'ilahi hesap' bilinciyle ahlaklı kalır."
+  },
+  {
+    "q": "Peygamberlere verilen suhuflar (sayfalar) ile ilgili olarak Hz. Adem'e kaç sayfa verilmiştir?",
+    "opts": [
+      "10",
+      "30",
+      "50",
+      "100",
+      "101"
+    ],
+    "correct": 0,
+    "explanation": "İslami kaynaklara göre Hz. Adem'e 10, Hz. Şit'e 50, Hz. İdris'a 30 ve Hz. İbrahim'e 10 sayfa (suhuf) verilmiştir."
+  },
+  {
+    "q": "İslam’da 'Şefaat' kavramının anlamı nedir?",
+    "opts": [
+      "İnsanın kendi günahlarını kendisinin bağışlaması",
+      "Ahirette Allah’ın izniyle peygamberlerin ve salih kulların müminlerin bağışlanması için dua ve talepte bulunması",
+      "Bir başkasının günahını dünyada üstlenmek",
+      "Öldükten sonra dünyaya tekrar gelmeyi istemek",
+      "Cennetin en yüksek mertebesine verilen isim"
+    ],
+    "correct": 1,
+    "explanation": "Şefaat, ahirette yetki verilen kişilerin, günahkar müminlerin affı veya derecelerinin yükselmesi için Allah'a yalvarmasıdır."
+  },
+  {
+    "q": "Kaza ve kader inancı kapsamında 'Tevekkül'ün doğru tanımı hangisidir?",
+    "opts": [
+      "Hiçbir iş yapmadan sonucu beklemek",
+      "Gerekli tüm önlemleri alıp, çaba sarf ettikten sonra sonucu Allah’a bırakmak",
+      "Her şeyi kendi gücüyle yapabileceğine inanmak",
+      "Kaderi tamamen reddetmek",
+      "Başarısızlığı sadece başkalarına yüklemek"
+    ],
+    "correct": 1,
+    "explanation": "Tevekkül, 'eşeği sağlam kazığa bağladıktan sonra' Allah'a güvenmektir; yani tedbir ve çalışmadan sonraki güven duygusudur."
+  }
+];
+
+// State
+let current = 0;
+let answers = new Array(questions.length).fill(null); // null=boş, -1=yanlış, n=seçilen
+
+function renderQuestion(idx) {
+  const q = questions[idx];
+  document.getElementById('qNum').textContent = `Soru ${idx+1} / ${questions.length}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qCounterMid').textContent = `${idx+1} / ${questions.length}`;
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+  const answered = answers[idx] !== null;
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answered ? ' disabled' : '');
+    if (answered) {
+      if (i === q.correct) btn.classList.add('correct');
+      else if (i === answers[idx] && answers[idx] !== q.correct) btn.classList.add('wrong');
+    }
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    if (!answered) btn.onclick = () => selectAnswer(idx, i);
+    container.appendChild(btn);
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback');
+  const fbIcon = document.getElementById('fbIcon');
+  const fbText = document.getElementById('fbText');
+  fb.className = 'feedback';
+  if (answered) {
+    if (answers[idx] === q.correct) {
+      fb.classList.add('show','correct-fb');
+      fbIcon.textContent = '✅';
+      fbText.innerHTML = `<strong>Doğru!</strong>${q.explanation}`;
+    } else {
+      fb.classList.add('show','wrong-fb');
+      fbIcon.textContent = '❌';
+      const correctLetter = letters[q.correct];
+      fbText.innerHTML = `<strong>Yanlış! Doğru cevap: ${correctLetter}</strong>${q.explanation}`;
+    }
+  }
+
+  // Nav
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').textContent = idx === questions.length - 1 ? 'Sonuçlar 🌸' : 'Sonraki →';
+
+  updateProgress();
+}
+
+function selectAnswer(qIdx, optIdx) {
+  if (answers[qIdx] !== null) return;
+  answers[qIdx] = optIdx;
+  renderQuestion(qIdx);
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0) return;
+  if (next >= questions.length) {
+    showResults();
+    return;
+  }
+  current = next;
+  renderQuestion(current);
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a !== null).length;
+  const correct = answers.filter((a, i) => a === questions[i].correct).length;
+  const pct = (answered / questions.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${answered} / ${questions.length} tamamlandı`;
+  document.getElementById('scoreBadge').textContent = `✅ ${correct} doğru`;
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  const correct = answers.filter((a, i) => a !== null && a === questions[i].correct).length;
+  const wrong = answers.filter((a, i) => a !== null && a !== questions[i].correct).length;
+  const skip = answers.filter(a => a === null).length;
+  const total = questions.length;
+  const pct = Math.round((correct / total) * 100);
+
+  let emoji = pct >= 80 ? '🌟' : pct >= 60 ? '🌸' : pct >= 40 ? '🌼' : '🌱';
+  let msg = pct >= 80 ? 'Harika! Çok başarılısınız!' : pct >= 60 ? 'İyi iş! Biraz daha çalışın.' : pct >= 40 ? 'Orta düzey. Tekrar edin!' : 'Daha fazla çalışmanız gerekiyor.';
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultScore').textContent = `${correct}/${total}`;
+  document.getElementById('resultSub').textContent = `${pct}% başarı oranı — ${msg}`;
+  document.getElementById('statCorrect').textContent = `✅ ${correct} Doğru`;
+  document.getElementById('statWrong').textContent = `❌ ${wrong} Yanlış`;
+  document.getElementById('statSkip').textContent = `○ ${skip} Boş`;
+
+  const scroll = document.getElementById('resultScroll');
+  scroll.innerHTML = '';
+  const letters = ['A','B','C','D','E'];
+  questions.forEach((q, i) => {
+    const a = answers[i];
+    const div = document.createElement('div');
+    let cls = 'result-item r-skip';
+    let icon = '○';
+    let info = 'Boş bıraktınız';
+    if (a !== null && a === q.correct) { cls = 'result-item r-correct'; icon = '✅'; info = `Doğru (${letters[a]})`; }
+    else if (a !== null) { cls = 'result-item r-wrong'; icon = '❌'; info = `Yanlış — Doğru: ${letters[q.correct]}`; }
+    div.className = cls;
+    div.innerHTML = `<span class="ri-icon">${icon}</span><span><b>${i+1}.</b> ${q.q.substring(0, 55)}… <em>${info}</em></span>`;
+    scroll.appendChild(div);
+  });
+}
+
+function restartQuiz() {
+  answers = new Array(questions.length).fill(null);
+  current = 0;
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  renderQuestion(0);
+}
+
+// Init
+renderQuestion(0);
+</script>
+</body>
+</html>
